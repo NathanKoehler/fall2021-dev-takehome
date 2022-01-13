@@ -10,7 +10,7 @@ interface TagTitle {
 function Tags(props: TagTitle) {
 
 	return (
-		<div className="tags-wrapper">
+		<div className="tags-container">
 			{props.titles &&
 				props.titles.map((title, index) => {
 					return (

@@ -1,0 +1,75 @@
+.modal {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+}
+
+.modal-space {
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.modal.entry .modal-space {
+	width: 60%;
+}
+
+.modal.edit .modal-space {
+	width: 90%;
+	padding: 10px 10px 10px 10px;
+	margin-bottom: 10px;
+	background-color: #ffffff;
+	background-clip: padding-box;
+
+	--border: 5px;
+	box-sizing: border-box;
+	border: solid 5px transparent;
+	border-radius: 0.8em;
+}
+
+.modal.edit .modal-space::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom:0;
+	left: 0;
+	z-index: -1;
+	margin: -5px;
+	border-radius: inherit;
+	background: linear-gradient(27deg, rgba(54,47,187,1) 0%, rgba(113,34,117,1) 10%, rgba(249,118,152,1) 53%, rgba(255,184,69,1) 100%);
+
+}
+
+.icon-btn {
+	padding: 8px 20px;
+	border-radius: 2px;
+	font-size: 20px;
+	outline: none;
+	border: none;
+	cursor: pointer;
+	background-color: transparent;
+}
+
+.text-btn {
+	padding: 5px 10px;
+	border-radius: 2px;
+	font-size: 1rem;
+	outline: none;
+	border: none;
+	cursor: pointer;
+}
+
+.text-btn.submit {
+	background-color: #168aad;
+	color: #ffffff;
+	transition: all 250ms ease-in-out;
+}
+
+.text-btn.submit:hover {
+	transform: scale3d(1.02, 1.02, 1);
+	background-color: #52b69a;
+}

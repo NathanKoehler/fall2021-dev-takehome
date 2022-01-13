@@ -1,37 +1,179 @@
+.task-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
 .task {
-    background-color: aquamarine;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  background-color: #ffd3b9;
+  border-radius: 0.8em;
 }
 
 .complete {
-    opacity: 40%;
+  opacity: 40%;
 }
 
-.tags-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.tags-container {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: 0.3em;
 }
 
 .tag-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2px 8px 2px 8px;
-    margin: 0 2px 0 2px;
-    border-radius: 0.25em;
-    color: #ffffff;
-    font-size: 0.9em;
-    font-weight:700;
-    background-color: rgb(67, 162, 226);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px 8px 2px 8px;
+  margin: 0 2px 0 2px;
+  border-radius: 0.25em;
+  color: #ffffff;
+  font-size: 0.9em;
+  font-weight: 700;
+  background-color: #3da2d1;
 }
 
 .tag-button {
-    border-radius: 2px;
-    font-size: 0.8rem;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    background-color: transparent;
-    color: #ffffff;
-    padding-top: 0.1em;
+  border-radius: 2px;
+  font-size: 0.8rem;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  color: #ffffff;
+  padding-top: 0.1em;
+}
+
+.inner-task {
+  width: 100%;
+  height: 100%;
+  padding: 10px 10px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-text {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.task-dueDate {
+  margin-left: 1px;
+}
+
+.menu {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  width: 20%;
+  height: 100%;
+}
+
+.menu-icon {
+  font-size: 1.5em;
+  margin-left: 10px;
+  color: #0000003f;
+  cursor: pointer;
+  transition: all 200ms ease-in-out;
+}
+
+.menu-icon.grayed {
+  cursor: default;
+}
+
+.menu-icon.edit:hover {
+  color: #3ba4fa;
+}
+
+.menu-icon.delete:hover {
+  color: #ec2d2d;
+}
+
+.task-top {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.textbox-wrapper {
+	position: relative;
+	margin: 15px 0 25px 0;
+
+	--main-input-color: #ff8800;
+	--secondary-input-color: #ffb600;
+}
+
+.textbox-wrapper input {
+	box-sizing: content-box;
+	width: 100%;
+	border: 0;
+	border-bottom: 2px solid rgb(95, 95, 95);
+	outline: 0;
+	font-size: 1rem;
+	color: rgb(0, 0, 0);
+	padding: 7px 0;
+	background: transparent;
+
+	/* avoid the date input and text input boxes from beign different heights*/
+	display: inline-block;
+	min-height: 1.5em;
+	transition: border-color 0.2s ease;
+}
+
+.textbox-date input {
+	box-sizing: content-box;
+}
+
+.textbox-wrapper label {
+	position: absolute;
+	top: 0.4rem;
+	left: 0;
+	pointer-events: none;
+	transition: all 0.2s ease;
+	font-size: 1.3rem;
+	color: gray;
+}
+
+.textbox-wrapper.tags {
+	--main-input-color: #3971b9;
+	--secondary-input-color: #3ad1eb;
+}
+
+.textbox-wrapper.date {
+	--main-input-color: #eb563a;
+	--secondary-input-color: #f4a698;
+}
+
+.textbox-wrapper input:focus {
+	padding-bottom: 6px;
+	font-weight: 700;
+	border-width: 3px;
+	border-image: linear-gradient(
+		to right,
+		var(--secondary-input-color),
+		var(--main-input-color)
+	);
+	border-image-slice: 1;
+}
+
+.textbox-wrapper input:focus ~ label,
+.textbox-wrapper input:valid ~ label {
+	top: -12px;
+	font-size: 12px;
+	font-weight: 700;
+	color: var(--main-input-color);
 }

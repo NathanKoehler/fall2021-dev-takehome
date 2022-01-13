@@ -5,102 +5,21 @@
 	font-family: "Yantramanav", sans-serif;
 }
 
-.modal {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
+
+.create-todo-btn i {
+	min-width: 40px;
+	color: #2cadd4;
+	background: transparent;
+	font-size: 40px;
+	transition: 250ms all ease;
+	-webkit-transition: 250ms all ease;
 }
 
-.modal-space {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 60%;
+.create-todo-btn i:hover {
+	color: #6bd6b8;
+	transform: scale3d(1.2, 1.2, 1);
 }
 
-.icon-btn {
-    padding: 8px 20px;
-    border-radius: 2px;
-    font-size: 20px;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    background-color: transparent;
-  }
-
-  .text-btn {
-    padding: 5px 10px;
-    border-radius: 2px;
-    font-size: 1rem;
-    outline: none;
-    border: none;
-    cursor: pointer;
-  }
-
-  .create-todo-btn i {
-    min-width: 40px;
-    color: rgb(0, 0, 0);
-    background: transparent;
-    font-size: 40px;
-    transition: 250ms all ease;
-    -webkit-transition: 250ms all ease;
-  }
-  
-  .create-todo-btn i:hover {
-    color: #29b0ff;
-    transform: scale3d(1.2, 1.2, 1);
-  }
-  
-.textbox-wrapper {
-    position: relative;
-    margin: 0 0 25px 0;
+.todo-tasklist {
+	margin-top: 25px;
 }
-
-  .textbox-wrapper input {
-    box-sizing:content-box;
-    width: 100%;
-    border: 0;
-    border-bottom: 2px solid rgb(95, 95, 95);
-    outline: 0;
-    font-size: 1rem;
-    color: rgb(0, 0, 0);
-    padding: 7px 0;
-    background: transparent;
-
-    /* avoid the date input and text input boxes from beign different heights*/
-    display:inline-block; 
-    min-height: 1.5em;
-    transition: border-color 0.2s ease;
-  }
-
-  .textbox-date input {
-    box-sizing:content-box;
-  }
-
-  .textbox-wrapper label {
-    position: absolute;
-    top: 0.4rem;
-    left: 0;
-    pointer-events: none;
-    transition: all 0.2s ease;
-    font-size: 1.3rem;
-    color: gray;
-  }
-
-  .textbox-wrapper input:focus {
-    padding-bottom: 6px;  
-    font-weight: 700;
-    border-width: 3px;
-    border-image: linear-gradient(to right, rgb(73, 14, 14),rgb(156, 50, 31));
-    border-image-slice: 1;
-  }
-
-  .textbox-wrapper input:focus ~ label,
-  .textbox-wrapper input:valid ~ label {
-    top:-12px;
-	font-size:12px; 
-    font-weight:700;
-    color: rgb(156, 50, 31);
-  }

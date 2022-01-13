@@ -83,7 +83,9 @@ export default function TodoList() {
 	let modal;
 
 	if (buttonPressed) {
-		modal = <TodoModal submit={addTodo} />;
+		modal = (<div className="modal entry">
+              <TodoModal submit={addTodo} />
+            </div>);
 	} else {
 		modal = (
 			<button onClick={buttonHandler} className="icon-btn">
@@ -98,12 +100,14 @@ export default function TodoList() {
 		<div>
 			<h1>What will you do today?</h1>
 			{modal}
+      <section className="todo-tasklist">
 			<Todo
-				todos={todos}
+				tasks={todos}
 				editTodo={editTodo}
 				completeTodo={completeTodo}
 				removeTodo={removeTodo}
 			/>
+      </section>
 		</div>
 	);
 }
