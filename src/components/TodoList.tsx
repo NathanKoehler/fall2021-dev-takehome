@@ -30,7 +30,7 @@ export type TodoItem = {
 
 export default function TodoList() {
 	const [todos, setTodos] = useState<TodoItem[]>([]);
-  const [buttonPressed, isButtonPressed] = useState(false);
+	const [buttonPressed, isButtonPressed] = useState(false);
 
 	const addTodo = (todo: TodoItem) => {
 		console.log(todo);
@@ -45,14 +45,14 @@ export default function TodoList() {
 
 		const newTodos = [todo, ...todos] as TodoItem[];
 		setTodos(newTodos);
-    isButtonPressed(false);
+		isButtonPressed(false);
 	};
 
 	const editTodo = (key: number, todo: TodoItem): void => {
 		if (!todo.title || /^\s*$/.test(todo.title)) {
 			return;
 		}
-    
+
 		todo.tagList.forEach((item) => {
 			if (/^\s*$/.test(item)) return;
 		});
@@ -80,20 +80,24 @@ export default function TodoList() {
 		isButtonPressed(true);
 	};
 
-  let modal;
+	let modal;
 
-  if (buttonPressed) {
-    modal = <TodoModal submit={addTodo} />;
-  } else {
-    modal = <button onClick={buttonHandler} className="add-todo-button">
-              <i className="fas fa-plus-circle"></i>
-            </button>;
-  }
+	if (buttonPressed) {
+		modal = <TodoModal submit={addTodo} />;
+	} else {
+		modal = (
+			<button onClick={buttonHandler} className="icon-btn">
+				<div className="create-todo-btn">
+					<i className="fas fa-plus-circle"></i>
+				</div>
+			</button>
+		);
+	}
 
 	return (
 		<div>
 			<h1>What will you do today?</h1>
-				{modal}
+			{modal}
 			<Todo
 				todos={todos}
 				editTodo={editTodo}

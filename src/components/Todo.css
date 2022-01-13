@@ -5,3 +5,33 @@
 .complete {
     opacity: 40%;
 }
+
+.tags-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tag-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px 8px 2px 8px;
+    margin: 0 2px 0 2px;
+    border-radius: 0.25em;
+    color: #ffffff;
+    font-size: 0.9em;
+    font-weight:700;
+    background-color: rgb(67, 162, 226);
+}
+
+.tag-button {
+    border-radius: 2px;
+    font-size: 0.8rem;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: #ffffff;
+    padding-top: 0.1em;
+}

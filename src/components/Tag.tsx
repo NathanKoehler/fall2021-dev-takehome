@@ -1,4 +1,5 @@
 import React from "react";
+import "./Todo.css";
 
 function Tag({ title, removeTag }: { title: string, removeTag: any }) {
     const handleRemoveTag = (e: React.MouseEvent) => {
@@ -8,8 +9,8 @@ function Tag({ title, removeTag }: { title: string, removeTag: any }) {
 
 	return (
 		<div className="tag-wrapper">
-			<p className="tag-title">{title}</p>
-			<button onClick={handleRemoveTag}>x</button>
+			<p className="tag-title">{title}&nbsp;</p>
+			<button className="tag-button" onClick={handleRemoveTag}><i className="fas fa-times"></i></button>
 		</div>
 	);
 }
