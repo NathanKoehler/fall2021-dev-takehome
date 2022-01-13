@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import HashGenerator from "./HashGenerator";
 import Tag from "./Tag";
 
 interface TagTitle {
@@ -12,9 +11,9 @@ function Tags(props: TagTitle) {
 	return (
 		<div className="tags-wrapper">
 			{props.titles &&
-				props.titles.map((title) => {
+				props.titles.map((title, index) => {
 					return (
-						<Tag key={HashGenerator(title)} title={title} removeTag={props.removeTag}></Tag>
+						<Tag key={index} title={title} removeTag={props.removeTag}></Tag>
 					);
 				})}
 		</div>

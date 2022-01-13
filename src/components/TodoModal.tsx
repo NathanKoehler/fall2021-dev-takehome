@@ -7,12 +7,12 @@ export default function TodoModal(props: any) {
 	const [tags, setTags] = useState<string[]>([]);
 	const [date, setDate] = useState("");
 
-    const removeTag = (removedTag:string) => {
+    const removeTag = (removedTag:string): void => {
         const updatedTags = [...tags].filter(title => (title !== removedTag));
         setTags(updatedTags);
     }
 
-    const submitTag = (e: React.MouseEvent) => {
+    const submitTag = (e: React.MouseEvent): void => {
 		e.preventDefault();
 
         if (currTag && !tags.find(elem => elem === currTag)) {
@@ -21,10 +21,11 @@ export default function TodoModal(props: any) {
         setCurrTag("");
 	};
 
-	const submitTodo = (e: React.MouseEvent) => {
+	const submitTodo = (e: React.MouseEvent): void => {
 		e.preventDefault();
         
 		props.submit({
+			key: hashString(name),
 			title: name,
 			dueDate: date,
 			tagList: tags,
@@ -34,6 +35,18 @@ export default function TodoModal(props: any) {
         setCurrTag("");
         setName("");
         setDate("");
+	};
+
+	const hashString = (val: string): number => {
+		let hash = 0, i, chr;
+		if (val.length === 0) 
+			return hash;
+		for (i = 0; i < val.length; i++) {
+			chr   = val.charCodeAt(i);
+			hash  = ((hash << 5) - hash) + chr;
+			hash |= 0;
+		}
+		return hash;
 	};
 
 	return (

@@ -21,6 +21,7 @@ import Todo from "./Todo";
 // Here's a baseline todo item type.
 // Feel free to extend or create your own interface!
 export type TodoItem = {
+  key: number;
 	title: string;
 	dueDate: Date;
 	tagList: string[];
@@ -36,26 +37,35 @@ export default function TodoList() {
 			return;
 		}
 
-    console.log("asd");
-
 		todo.tagList.forEach((item) => {
 			if (/^\s*$/.test(item)) return;
 		});
-    console.log("asd");
     console.log(...todos);
 
 		const newTodos = [todo, ...todos] as TodoItem[];
 		setTodos(newTodos);
 	};
 
-  const removeTodo = (title:string) => {
-    const removedArr = [...todos].filter(todo => todo.title !== title);
+  const editTodo = (key: number, todo: TodoItem): void => {
+    if (!todo.title || /^\s*$/.test(todo.title)) {
+			return;
+		}
+
+		todo.tagList.forEach((item) => {
+			if (/^\s*$/.test(item)) return;
+		});
+
+    setTodos(prev => prev.map(item => (item.key === key ? todo : item)));
+  }
+
+  const removeTodo = (key: number): void => {
+    const removedArr = [...todos].filter(todo => todo.key !== key);
     setTodos(removedArr);
   };
 
-  const completeTodo = (title:string) => {
+  const completeTodo = (key: number): void => {
     let updatedTodos = todos.map(todo => {
-      if (todo.title === title) {
+      if (todo.key === key) {
         todo.completed = !todo.completed;
       }
       return todo;
@@ -68,6 +78,7 @@ export default function TodoList() {
 			<TodoModal submit={addTodo}/>
       <Todo
         todos={todos}
+        editTodo={editTodo}
         completeTodo={completeTodo}
         removeTodo={removeTodo}
       />

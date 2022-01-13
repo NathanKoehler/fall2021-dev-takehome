@@ -5,6 +5,7 @@ import "./Todo.css";
 
 interface TodoProps {
 	todos: TodoItem[];
+	editTodo: any;
 	completeTodo: any;
 	removeTodo: any;
 }
@@ -13,13 +14,13 @@ export default function Todo(props: TodoProps) {
 	return (
 		<div className="todo-wrapper">
 			{props.todos &&
-				props.todos.map((todo, index) => {
+				props.todos.map((todo) => {
 					return (
 						<div
 							className={
 								todo.completed ? "task complete" : "task"
 							}
-							key={index}
+							key={todo.key}
 						>
 							<div className="inner-task">
 								<div
@@ -42,12 +43,16 @@ export default function Todo(props: TodoProps) {
 								</div>
 								<div className="menu">
 									<div className="edit">
-										<p>e</p>
+										<p
+											onClick={() =>
+												props.editTodo(todo.key)
+											}
+										>e</p>
 									</div>
 									<div className="delete">
 										<p
 											onClick={() =>
-												props.removeTodo(todo.title)
+												props.removeTodo(todo.key)
 											}
 										>
 											d
