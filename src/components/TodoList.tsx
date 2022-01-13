@@ -21,7 +21,7 @@ import Todo from "./Todo";
 // Here's a baseline todo item type.
 // Feel free to extend or create your own interface!
 export type TodoItem = {
-  key: number;
+	key: number;
 	title: string;
 	dueDate: Date;
 	tagList: string[];
@@ -30,9 +30,10 @@ export type TodoItem = {
 
 export default function TodoList() {
 	const [todos, setTodos] = useState<TodoItem[]>([]);
-  
+  const [buttonPressed, isButtonPressed] = useState(false);
+
 	const addTodo = (todo: TodoItem) => {
-    console.log(todo);
+		console.log(todo);
 		if (!todo.title || /^\s*$/.test(todo.title)) {
 			return;
 		}
@@ -40,48 +41,65 @@ export default function TodoList() {
 		todo.tagList.forEach((item) => {
 			if (/^\s*$/.test(item)) return;
 		});
-    console.log(...todos);
+		console.log(...todos);
 
 		const newTodos = [todo, ...todos] as TodoItem[];
 		setTodos(newTodos);
+    isButtonPressed(false);
 	};
 
-  const editTodo = (key: number, todo: TodoItem): void => {
-    if (!todo.title || /^\s*$/.test(todo.title)) {
+	const editTodo = (key: number, todo: TodoItem): void => {
+		if (!todo.title || /^\s*$/.test(todo.title)) {
 			return;
 		}
-
+    
 		todo.tagList.forEach((item) => {
 			if (/^\s*$/.test(item)) return;
 		});
+		setTodos((prev) =>
+			prev.map((item) => (item.key === key ? todo : item))
+		);
+	};
 
-    setTodos(prev => prev.map(item => (item.key === key ? todo : item)));
+	const removeTodo = (key: number): void => {
+		const removedArr = [...todos].filter((todo) => todo.key !== key);
+		setTodos(removedArr);
+	};
+
+	const completeTodo = (key: number): void => {
+		let updatedTodos = todos.map((todo) => {
+			if (todo.key === key) {
+				todo.completed = !todo.completed;
+			}
+			return todo;
+		});
+		setTodos(updatedTodos);
+	};
+
+	const buttonHandler = () => {
+		isButtonPressed(true);
+	};
+
+  let modal;
+
+  if (buttonPressed) {
+    modal = <TodoModal submit={addTodo} />;
+  } else {
+    modal = <button onClick={buttonHandler} className="add-todo-button">
+              <i className="fas fa-plus-circle"></i>
+            </button>;
   }
-
-  const removeTodo = (key: number): void => {
-    const removedArr = [...todos].filter(todo => todo.key !== key);
-    setTodos(removedArr);
-  };
-
-  const completeTodo = (key: number): void => {
-    let updatedTodos = todos.map(todo => {
-      if (todo.key === key) {
-        todo.completed = !todo.completed;
-      }
-      return todo;
-    });
-    setTodos(updatedTodos);
-  };
 
 	return (
 		<div>
-			<TodoModal submit={addTodo}/>
-      <Todo
-        todos={todos}
-        editTodo={editTodo}
-        completeTodo={completeTodo}
-        removeTodo={removeTodo}
-      />
+			<h1>What will you do today?</h1>
+				{modal}
+			<Todo
+				todos={todos}
+				editTodo={editTodo}
+				completeTodo={completeTodo}
+				removeTodo={removeTodo}
+			/>
 		</div>
 	);
 }

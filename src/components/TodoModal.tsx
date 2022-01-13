@@ -1,11 +1,24 @@
 import React, { useState } from "react";
 import Tags from "./Tags";
+import "./TodoList.css";
 
 export default function TodoModal(props: any) {
-	const [name, setName] = useState("");
+	const [name, setName] = useState(props.current ? props.current.title : "");
     const [currTag, setCurrTag] = useState("");
-	const [tags, setTags] = useState<string[]>([]);
-	const [date, setDate] = useState("");
+	const [tags, setTags] = useState<string[]>(props.current ? props.current.tagList : []);
+	const [date, setDate] = useState(props.current ? props.current.dueDate : []);
+
+	const hashString = (val: string): number => {
+		let hash = 0, i, chr;
+		if (val.length === 0) 
+			return hash;
+		for (i = 0; i < val.length; i++) {
+			chr   = val.charCodeAt(i);
+			hash  = ((hash << 5) - hash) + chr;
+			hash |= 0;
+		}
+		return hash;
+	};
 
     const removeTag = (removedTag:string): void => {
         const updatedTags = [...tags].filter(title => (title !== removedTag));
@@ -24,8 +37,16 @@ export default function TodoModal(props: any) {
 	const submitTodo = (e: React.MouseEvent): void => {
 		e.preventDefault();
         
+		let taskKey;
+
+		if (props.current) {
+			taskKey = props.current.key;
+		} else {
+			taskKey = hashString(name);
+		}
+
 		props.submit({
-			key: hashString(name),
+			key: taskKey,
 			title: name,
 			dueDate: date,
 			tagList: tags,
@@ -35,18 +56,6 @@ export default function TodoModal(props: any) {
         setCurrTag("");
         setName("");
         setDate("");
-	};
-
-	const hashString = (val: string): number => {
-		let hash = 0, i, chr;
-		if (val.length === 0) 
-			return hash;
-		for (i = 0; i < val.length; i++) {
-			chr   = val.charCodeAt(i);
-			hash  = ((hash << 5) - hash) + chr;
-			hash |= 0;
-		}
-		return hash;
 	};
 
 	return (
