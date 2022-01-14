@@ -6,11 +6,31 @@
 	width: 100%;
 }
 
+.textbox-wrapper label {
+	position: absolute;
+	top: 0.4rem;
+	left: 0;
+	pointer-events: none;
+	transition: all 0.2s ease;
+	font-size: 1.3rem;
+	color: gray;
+}
+
 .modal-space {
 	display: flex;
 	position: relative;
 	flex-direction: column;
 	justify-content: center;
+}
+
+.modal.entry {
+	opacity: 100%;
+	transition: all 250ms ease-in-out;
+}
+
+.modal.entry.active {
+	opacity: 0%;
+	transition: all 250ms ease-in-out;
 }
 
 .modal.entry .modal-space {
@@ -56,11 +76,34 @@
 
 .text-btn {
 	padding: 5px 10px;
-	border-radius: 2px;
+	border-radius: 0.4em;
 	font-size: 1rem;
 	outline: none;
 	border: none;
 	cursor: pointer;
+}
+
+.create-tag-text {
+	--rgb: 22, 138, 173; /* color for when the tags are being edited */
+	background: none;
+	color:rgba(var(--rgb), 0);
+	transition: all 250ms ease-out;
+}
+
+.textbox-wrapper.tags input:focus ~ button p,
+.textbox-wrapper.tags input:valid ~ button p {
+	color:rgba(var(--rgb), 1);
+}
+
+.create-tag-text:hover {
+	color: #6ce2c1;
+	--rgb: 108, 226, 193;
+}
+
+.create-tag-text i {
+	transform: translate3d(0, 0.05em, 0) scale3d(0.8, 0.8, 1);
+	transition: color 250ms ease;
+	color:rgba(var(--rgb), 1);
 }
 
 .text-btn.submit {
@@ -70,6 +113,89 @@
 }
 
 .text-btn.submit:hover {
-	transform: scale3d(1.02, 1.02, 1);
 	background-color: #52b69a;
+}
+
+.textbox-wrapper {
+	position: relative;
+	margin: 15px 0 25px 0;
+
+	--main-input-color: #ff8800;
+	--secondary-input-color: #ffb600;
+}
+
+.textbox-wrapper input {
+	box-sizing: content-box;
+	width: 100%;
+	border: 0;
+	border-bottom: 2px solid rgb(95, 95, 95);
+	outline: 0;
+	font-size: 1rem;
+	color: rgb(0, 0, 0);
+	padding: 7px 0;
+	background: transparent;
+
+	/* avoid the date input and text input boxes from beign different heights*/
+	display: inline-block;
+	min-height: 1.5em;
+	transition: border-color 0.2s ease;
+}
+
+.textbox-date input {
+	box-sizing: content-box;
+}
+
+.textbox-wrapper label {
+	position: absolute;
+	top: 0.4em;
+	left: 0;
+	pointer-events: none;
+	transition: all 0.2s ease;
+	font-size: 1.3rem;
+	color: gray;
+}
+
+.textbox-wrapper button {
+	position: absolute;
+	top: 0.15em;
+	right: -0.3em;
+	transition: all 0.2s ease;
+	font-size: 1.3em;
+  	background-color: transparent;
+	color: #3971b9;
+}
+
+.textbox-wrapper button:hover {
+	color: #7be4f7;
+}
+
+.textbox-wrapper.tags {
+	margin-bottom: 10px;
+	--main-input-color: #3971b9;
+	--secondary-input-color: #3ad1eb;
+}
+
+.textbox-wrapper.date {
+	--main-input-color: #eb563a;
+	--secondary-input-color: #f4a698;
+}
+
+.textbox-wrapper input:focus {
+	padding-bottom: 6px;
+	font-weight: 700;
+	border-width: 3px;
+	border-image: linear-gradient(
+		to right,
+		var(--secondary-input-color),
+		var(--main-input-color)
+	);
+	border-image-slice: 1;
+}
+
+.textbox-wrapper input:focus ~ label,
+.textbox-wrapper input:valid ~ label {
+	top: -12px;
+	font-size: 12px;
+	font-weight: 700;
+	color: var(--main-input-color);
 }

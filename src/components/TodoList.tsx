@@ -77,28 +77,33 @@ export default function TodoList() {
 	};
 
 	const buttonHandler = () => {
-		isButtonPressed(true);
+		if (buttonPressed) {
+			isButtonPressed(false);
+		} else {
+			isButtonPressed(true);
+		}
 	};
 
 	let modal;
 
 	if (buttonPressed) {
-		modal = (<div className="modal entry">
+		modal = (<div className={buttonPressed ? "modal entry" : "modal entry"}>
               <TodoModal submit={addTodo} />
             </div>);
 	} else {
 		modal = (
-			<button onClick={buttonHandler} className="icon-btn">
-				<div className="create-todo-btn">
-					<i className="fas fa-plus-circle"></i>
-				</div>
-			</button>
+			<div></div>
 		);
 	}
 
 	return (
 		<div>
 			<h1>What will you do today?</h1>
+			<button onClick={buttonHandler} className="icon-btn">
+				<div className="create-todo-btn">
+					<i className={buttonPressed ? "fas fa-times-circle" : "fas fa-plus-circle"}></i>
+				</div>
+			</button>
 			{modal}
       <section className="todo-tasklist">
 			<Todo

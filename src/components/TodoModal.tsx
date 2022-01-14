@@ -91,7 +91,7 @@ export default function TodoModal(props: any) {
         />
         <label>Tags</label>
         <button onClick={submitTag} className="text-btn">
-          Create tag
+          <p className="create-tag-text">Create tag <i className="fas fa-pen"></i></p>
         </button>
       </div>
       <Tags titles={tags} removeTag={removeTag} />
