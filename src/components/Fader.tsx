@@ -2,25 +2,35 @@ import React, {useState, useEffect } from 'react'
 import "./TodoList.css";
 
 export default function Fader(props: any) {
+    let activate = true; // will try to make the reverse animation as well
+    const delay = props.delay;
+    const fadeIn = props.state;
     const [fadeProp, setFadeProp] = useState({
-        fade: 'fade-in',
+        // fade delay is for keeping elements invisible at the initial render
+        // elements will be changed later in the useEffect
+        fade: (fadeIn ? "fade out" : "fade delay"), 
     });
-
+    
     useEffect(() => {
-        const timeout = setInterval(() => {
-            if (fadeProp.fade === 'fade-in') {
-                setFadeProp({fade: 'fade-out'});
+        const timeout = setTimeout(() => {
+            if (fadeIn) { // Allows parents to control the fade properties
+                setFadeProp({fade: 'fade in'});
             } else {
-                setFadeProp({fade: 'fade-in'});
+                setFadeProp({fade: 'fade out'});
             }
-        }, 4000);
-
-        return () => clearInterval(timeout);
-    }, [fadeProp]);
+            
+        }, (fadeIn ? delay : 0)); // makes sure there is no delay on fade out
+        return () => clearTimeout(timeout);
+    }, [delay, fadeIn, activate]); // fadeIn allows outside communication
     
     return (
-        <div className={fadeProp.fade}>
-            {...props}
-        </div>
+        <section className={fadeProp.fade}>
+            {props.content}
+        </section>
     )
+}
+
+Fader.defaultProps  = {
+    state: true,
+    delay: 0
 }

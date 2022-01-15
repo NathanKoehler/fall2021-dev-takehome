@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./TodoList.css";
 import TodoModal from "./TodoModal";
 import Todo from "./Todo";
+import Fader from "./Fader";
 
 /**
  * Thank you for applying to Bits of Good. You are free to add/delete/modify any
@@ -21,98 +22,122 @@ import Todo from "./Todo";
 // Here's a baseline todo item type.
 // Feel free to extend or create your own interface!
 export type TodoItem = {
-	key: number;
-	title: string;
-	dueDate: Date;
-	tagList: string[];
-	completed: boolean;
+  key: number;
+  title: string;
+  dueDate: Date;
+  tagList: string[];
+  completed: boolean;
 };
 
 export default function TodoList() {
-	const [todos, setTodos] = useState<TodoItem[]>([]);
-	const [buttonPressed, isButtonPressed] = useState(false);
+  const [todos, setTodos] = useState<TodoItem[]>([]);
+  const [disableModal, setDisableModal] = useState(true);
+  const [buttonPressed, isButtonPressed] = useState(false);
 
-	const addTodo = (todo: TodoItem) => {
-		console.log(todo);
-		if (!todo.title || /^\s*$/.test(todo.title)) {
-			return;
-		}
+  const addTodo = (todo: TodoItem) => {
+    console.log(todo);
+    if (!todo.title || /^\s*$/.test(todo.title)) {
+      return;
+    }
 
-		todo.tagList.forEach((item) => {
-			if (/^\s*$/.test(item)) return;
-		});
-		console.log(...todos);
+    todo.tagList.forEach((item) => {
+      if (/^\s*$/.test(item)) return;
+    });
+    console.log(...todos);
 
-		const newTodos = [todo, ...todos] as TodoItem[];
-		setTodos(newTodos);
-		isButtonPressed(false);
-	};
+    const newTodos = [todo, ...todos] as TodoItem[];
+    setTodos(newTodos);
+    isButtonPressed(false);
+  };
 
-	const editTodo = (key: number, todo: TodoItem): void => {
-		if (!todo.title || /^\s*$/.test(todo.title)) {
-			return;
-		}
+  const editTodo = (key: number, todo: TodoItem): void => {
+    if (!todo.title || /^\s*$/.test(todo.title)) {
+      return;
+    }
 
-		todo.tagList.forEach((item) => {
-			if (/^\s*$/.test(item)) return;
-		});
-		setTodos((prev) =>
-			prev.map((item) => (item.key === key ? todo : item))
-		);
-	};
+    todo.tagList.forEach((item) => {
+      if (/^\s*$/.test(item)) return;
+    });
+    setTodos((prev) => prev.map((item) => (item.key === key ? todo : item)));
+  };
 
-	const removeTodo = (key: number): void => {
-		const removedArr = [...todos].filter((todo) => todo.key !== key);
-		setTodos(removedArr);
-	};
+  const removeTodo = (key: number): void => {
+    const removedArr = [...todos].filter((todo) => todo.key !== key);
+    setTodos(removedArr);
+  };
 
-	const completeTodo = (key: number): void => {
-		let updatedTodos = todos.map((todo) => {
-			if (todo.key === key) {
-				todo.completed = !todo.completed;
-			}
-			return todo;
-		});
-		setTodos(updatedTodos);
-	};
+  const completeTodo = (key: number): void => {
+    let updatedTodos = todos.map((todo) => {
+      if (todo.key === key) {
+        todo.completed = !todo.completed;
+      }
+      return todo;
+    });
+    setTodos(updatedTodos);
+  };
 
-	const buttonHandler = () => {
-		if (buttonPressed) {
-			isButtonPressed(false);
-		} else {
-			isButtonPressed(true);
-		}
-	};
+  const [doNo, setDoNo] = useState(false);
+  const [timers, setTimers] = useState<NodeJS.Timeout[]>([]);
 
-	let modal;
+  const buttonHandler = () => {
+    isButtonPressed(!buttonPressed);
+    if (!buttonPressed) {
+      setDoNo(true);
+      timers.forEach((timeout) => clearTimeout(timeout)); // cleans the timers out if the button is pressed
+      setTimers([]);
+    } else {
+      setTimers((oldArray) => [ // adds timers to an array to later clean them if needed
+        ...oldArray, // realistically should only have a length of 1 at max
+        setTimeout(() => {
+          setDoNo(false);
+        }, 300),
+      ]);
+    }	
+  };
 
-	if (buttonPressed) {
-		modal = (<div className={buttonPressed ? "modal entry" : "modal entry"}>
-              <TodoModal submit={addTodo} />
-            </div>);
-	} else {
-		modal = (
-			<div></div>
-		);
-	}
+  const clearAllTimers = useCallback(() => { // ensures that the timers are gone on component unmount
+	timers.forEach((timeout) => clearTimeout(timeout))
+  }, [timers])
 
-	return (
-		<div>
-			<h1>What will you do today?</h1>
-			<button onClick={buttonHandler} className="icon-btn">
-				<div className="create-todo-btn">
-					<i className={buttonPressed ? "fas fa-times-circle" : "fas fa-plus-circle"}></i>
-				</div>
-			</button>
-			{modal}
+  useEffect(() => () => {
+	clearAllTimers();
+}, [clearAllTimers]); // when the component unmounts
+
+  return (
+    <div>
+      <div className="modal-border-wrapper">
+        <div className={buttonPressed ? "modal-border active" : "modal-border"}>
+          <h1>What will you do today?</h1>
+          <button onClick={buttonHandler} className="icon-btn">
+            <div className="create-todo-btn">
+              <i
+                className={
+                  buttonPressed ? "fas fa-times-circle" : "fas fa-plus-circle"
+                }
+              ></i>
+            </div>
+          </button>
+          {doNo && (
+            <div
+              className={buttonPressed ? "modal entry active" : "modal entry"}
+            >
+              <Fader
+                state={buttonPressed}
+                delay={150}
+                content={<TodoModal submit={addTodo} />}
+              />
+            </div>
+          )}
+        </div>
+      </div>
       <section className="todo-tasklist">
-			<Todo
-				tasks={todos}
-				editTodo={editTodo}
-				completeTodo={completeTodo}
-				removeTodo={removeTodo}
-			/>
+        <Todo
+          tasks={todos}
+          editTodo={editTodo}
+          completeTodo={completeTodo}
+          removeTodo={removeTodo}
+        />
       </section>
-		</div>
-	);
+    </div>
+  );
 }

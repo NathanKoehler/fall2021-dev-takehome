@@ -24,17 +24,19 @@
 }
 
 .modal.entry {
-	opacity: 100%;
-	transition: all 250ms ease-in-out;
+	position: absolute;
+	pointer-events: none;
+	left: 0;
+	transition: transform 300ms ease;
 }
 
 .modal.entry.active {
-	opacity: 0%;
-	transition: all 250ms ease-in-out;
+	pointer-events: all;
+	transform: translateY(11rem);
 }
 
 .modal.entry .modal-space {
-	width: 60%;
+	width: 80%;
 }
 
 .modal.edit .modal-space {

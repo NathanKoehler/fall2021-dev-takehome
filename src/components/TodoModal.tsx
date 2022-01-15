@@ -111,7 +111,7 @@ export default function TodoModal(props: any) {
         type="submit"
         onClick={submitTodo}
         className="text-btn submit"
-        value="Create"
+        value={props.current ? "Edit" : "Create"}
       ></input>
     </form>
   );

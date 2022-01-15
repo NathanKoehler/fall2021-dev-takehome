@@ -3,6 +3,7 @@ import { TodoItem } from "./TodoList";
 import TodoModal from "./TodoModal";
 import "./TodoList.css";
 import "./Todo.css";
+import Fader from "./Fader";
 
 interface TodoProps {
   tasks: TodoItem[];
@@ -33,7 +34,7 @@ export default function Todo(props: TodoProps) {
           if (editingTodo && task.key === editingTodo.key) {
             return (
               <div className="modal edit" key={task.key}>
-                <TodoModal current={editingTodo} submit={modTodo} />
+                <Fader content={<TodoModal current={editingTodo} submit={modTodo} />} />
               </div>
             );
           } else {

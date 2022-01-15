@@ -5,6 +5,50 @@
 	font-family: "Yantramanav", sans-serif;
 }
 
+.modal-border {
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	justify-content: center;
+	width: 60%;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+	background-color: #ffffff;
+	background-clip: padding-box;
+	box-sizing: border-box;
+	border: solid 5px transparent;
+	border-radius: 0.8em;
+	transition: all 300ms ease-in-out;
+}
+
+.modal-border.active {
+	padding-bottom: 300px;
+}
+
+.modal-border::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom:0;
+	left: 0;
+	z-index: -1;
+	margin: -5px;
+	border-radius: inherit;
+	background: linear-gradient(27deg, #e3f5a8 0%, #d9ed92 10%, #b5e48c 20%, #99d98c 30%, #76c893 40%, #52b69a 50%, #34a0a4 60%, #168aad 70%, #1a759f 80%, #1e6091 90%, #184e77 100%);
+}
+
+.modal-border-wrapper {
+	z-index: -1;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
 .create-todo-btn i {
 	min-width: 40px;
@@ -24,11 +68,22 @@
 	margin-top: 25px;
 }
 
-.fade-in {
-	transition: opacity 1s ease;
+.fade {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
 }
 
-.fade-out {
+.fade.in {
+	transition: opacity 250ms ease-out;
+}
+
+.fade.out {
 	opacity: 0%;
-	transition: opacity 1s ease;
+	transition: opacity 100ms ease-out;
+}
+
+.fade.delay {
+	opacity: 0%;
 }
