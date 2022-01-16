@@ -30,7 +30,7 @@ export default function Fader(props: any) {
     )
 }
 
-Fader.defaultProps  = {
+Fader.defaultProps = {
     state: true,
     delay: 0
 }

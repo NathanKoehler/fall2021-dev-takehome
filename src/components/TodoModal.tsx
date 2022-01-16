@@ -5,10 +5,12 @@ import "./TodoModal.css";
 export default function TodoModal(props: any) {
   const [name, setName] = useState(props.current ? props.current.title : "");
   const [currTag, setCurrTag] = useState("");
-  const [tags, setTags] = useState<string[]>(
+  const [canSubmit, setCanSubmit] = useState<boolean[]>(props.current ? [true, true] : [false, false]);
+  const [tags, setTags] = useState<string[]>( // if this is an edit modal, properities need to be taken from old tasks
     props.current ? props.current.tagList : []
   );
   const [date, setDate] = useState(props.current ? props.current.dueDate : []);
+  const [dateInputType, setDateInputType] = useState("text");
 
   const hashString = (val: string): number => {
     let hash = 0,
@@ -61,8 +63,6 @@ export default function TodoModal(props: any) {
     setDate("");
   };
 
-  const [dateInputType, setDateInputType] = useState("text");
-
   const changeDateInput = () => {
     if (dateInputType === "text") {
       setDateInputType("date");
@@ -77,7 +77,14 @@ export default function TodoModal(props: any) {
         <input
           type="input"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => {
+            setName(e.target.value);
+            if (e.target.value.length > 0) {
+              setCanSubmit([true, canSubmit[1]]);
+            } else {
+              setCanSubmit([false, canSubmit[1]]);
+            }
+          }}
           required
         />
         <label>Task</label>
@@ -87,7 +94,6 @@ export default function TodoModal(props: any) {
           type="input"
           value={currTag}
           onChange={(e) => setCurrTag(e.target.value)}
-          required
         />
         <label>Tags</label>
         <button onClick={submitTag} className="text-btn">
@@ -99,18 +105,24 @@ export default function TodoModal(props: any) {
         <input
           type={dateInputType}
           value={date}
-          onChange={(e) => setDate(e.target.value)}
+          onChange={(e) => {
+            setDate(e.target.value);
+            if (!isNaN(new Date(e.target.value).getDate())) {
+              setCanSubmit([canSubmit[0], true]);
+            } else {
+              setCanSubmit([canSubmit[0], false]);
+            }
+          }}
           className="textbox-date"
           onFocus={changeDateInput}
           onBlur={changeDateInput}
-          required
         ></input>
         <label>Due Date</label>
       </div>
       <input
         type="submit"
         onClick={submitTodo}
-        className="text-btn submit"
+        className={(canSubmit[0] && canSubmit[1]) ? "text-btn submit" : "text-btn disabled submit"}
         value={props.current ? "Edit" : "Create"}
       ></input>
     </form>

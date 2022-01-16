@@ -108,9 +108,15 @@
 	color:rgba(var(--rgb), 1);
 }
 
+.text-btn.disabled {
+	pointer-events: none;
+	opacity: 30%;
+}
+
 .text-btn.submit {
 	background-color: #168aad;
 	color: #ffffff;
+	margin-top: 0.7rem;
 	transition: all 250ms ease-in-out;
 }
 

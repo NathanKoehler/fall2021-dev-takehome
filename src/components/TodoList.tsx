@@ -31,7 +31,6 @@ export type TodoItem = {
 
 export default function TodoList() {
   const [todos, setTodos] = useState<TodoItem[]>([]);
-  const [disableModal, setDisableModal] = useState(true);
   const [buttonPressed, isButtonPressed] = useState(false);
 
   const addTodo = (todo: TodoItem) => {
