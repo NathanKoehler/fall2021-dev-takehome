@@ -85,7 +85,7 @@ export default function TodoModal(props: any) {
               setCanSubmit([false, canSubmit[1]]);
             }
           }}
-          required
+          required // enables the animation for the description of each line
         />
         <label>Task</label>
       </div>
@@ -94,6 +94,7 @@ export default function TodoModal(props: any) {
           type="input"
           value={currTag}
           onChange={(e) => setCurrTag(e.target.value)}
+          required // enables the animation for the description of each line
         />
         <label>Tags</label>
         <button onClick={submitTag} className="text-btn">
@@ -116,6 +117,7 @@ export default function TodoModal(props: any) {
           className="textbox-date"
           onFocus={changeDateInput}
           onBlur={changeDateInput}
+          required // enables the animation for the description of each line
         ></input>
         <label>Due Date</label>
       </div>
