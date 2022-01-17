@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
 import Tag from "./Tag";
-import "./Todo.css";
+import "./Task.css";
 
 interface TagTitle {
 	titles: string[];

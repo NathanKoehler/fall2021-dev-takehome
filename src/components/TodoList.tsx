@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./TodoList.css";
 import TodoModal from "./TodoModal";
-import Todo from "./Todo";
+import Task from "./Task";
 import Fader from "./Fader";
 
 /**
@@ -29,12 +29,15 @@ export type TodoItem = {
   completed: boolean;
 };
 
+export type SortData = {
+  completedNum: number;
+};
+
 export default function TodoList() {
   const [todos, setTodos] = useState<TodoItem[]>([]);
   const [buttonPressed, isButtonPressed] = useState(false);
 
   const addTodo = (todo: TodoItem) => {
-    console.log(todo);
     if (!todo.title || /^\s*$/.test(todo.title)) {
       return;
     }
@@ -42,10 +45,8 @@ export default function TodoList() {
     todo.tagList.forEach((item) => {
       if (/^\s*$/.test(item)) return;
     });
-    console.log(...todos);
-
     const newTodos = [todo, ...todos] as TodoItem[];
-    setTodos(newTodos);
+    setTodos(sorted([true, true], newTodos));
     isButtonPressed(false);
   };
 
@@ -57,7 +58,9 @@ export default function TodoList() {
     todo.tagList.forEach((item) => {
       if (/^\s*$/.test(item)) return;
     });
-    setTodos((prev) => prev.map((item) => (item.key === key ? todo : item)));
+    setTodos((prev) => {
+		return sorted([true, true], (prev.map((item:TodoItem) => (item.key === key ? todo : item))))
+	});
   };
 
   const removeTodo = (key: number): void => {
@@ -72,27 +75,45 @@ export default function TodoList() {
       }
       return todo;
     });
-    setTodos(updatedTodos);
+	setTodos(sorted([true, true], updatedTodos));
   };
 
   const [activateModal, setActivateModal] = useState(false);
 
   const buttonHandler = () => {
-	isButtonPressed(!buttonPressed);
+    isButtonPressed(!buttonPressed);
     if (!buttonPressed) {
-	  	setActivateModal(true);
+      setActivateModal(true);
     }
   };
 
+  function sorted(conditions: boolean[], tasks: TodoItem[]): any {
+    const sortedTasks = tasks;
+    if (conditions[0]) {
+      // sort by date
+      sortedTasks.sort((a, b) => {
+		  return new Date(a.dueDate).valueOf() - new Date(b.dueDate).valueOf()
+		});
+	  console.log("sort by date");
+    }
+	if (false) {
+		sortedTasks.sort((a, b) => (b.completed === a.completed) ? 0 : (b.completed ? 1 : 0));
+    }
+	console.log(sortedTasks);
+	return tasks;
+  }
+
   useEffect(() => {
-	console.log("cleared timeout");
-	const timer = (activateModal ? undefined : setTimeout(() => {
-	  setActivateModal(false);
-  }, 300))
-	return () => {
-		clearTimeout(timer as NodeJS.Timeout);
-	}
-}, [activateModal]);
+    console.log("cleared timeout");
+    const timer = activateModal
+      ? undefined
+      : setTimeout(() => {
+          setActivateModal(false);
+        }, 300);
+    return () => {
+      clearTimeout(timer as NodeJS.Timeout);
+    };
+  }, [activateModal]);
 
   return (
     <div>
@@ -121,8 +142,8 @@ export default function TodoList() {
           )}
         </div>
       </div>
-      <section className="todo-tasklist">
-        <Todo
+      <section className="tasklist">
+        <Task
           tasks={todos}
           editTodo={editTodo}
           completeTodo={completeTodo}

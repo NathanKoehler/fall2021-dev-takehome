@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 60%;
 }
 
 .task {
@@ -10,7 +11,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 90%;
   background-color: #81e7e4;
   border-radius: 0.8em;
 }
@@ -53,7 +53,7 @@
 .inner-task {
   width: 100%;
   height: 100%;
-  padding: 10px 10px 10px 10px;
+  padding: 10px 12px 10px 12px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -66,6 +66,7 @@
   flex-direction: column;
   justify-content: space-between;
   text-align: left;
+  cursor: pointer;
 }
 
 .task-dueDate {
@@ -77,27 +78,38 @@
   justify-content: flex-end;
   align-items: flex-start;
   width: 20%;
+  margin: 4px 4px 0 0;
   height: 100%;
 }
 
 .menu-icon {
-  font-size: 1.5em;
-  margin-left: 10px;
+  font-size: 1.6em;
+  margin-left: 12px;
   color: #0000003f;
   cursor: pointer;
-  transition: all 200ms ease-in-out;
+  transition: all 150ms ease-in-out;
 }
 
 .menu-icon.grayed {
   cursor: default;
 }
 
+.menu-icon.accept {
+  font-size: 0.9em;
+  color: #000000a4;
+  margin-right: 12px;
+}
+
+.menu-icon.accept:hover {
+  color: #0dac22;
+}
+
 .menu-icon.edit:hover {
-  color: #3ba4fa;
+  color: #269dff;
 }
 
 .menu-icon.delete:hover {
-  color: #ec2d2d;
+  color: #f03333;
 }
 
 .task-top {

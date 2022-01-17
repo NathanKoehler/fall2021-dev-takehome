@@ -1,5 +1,5 @@
 import React from "react";
-import "./Todo.css";
+import "./Task.css";
 
 function Tag({ title, removeTag }: { title: string, removeTag: any }) {
     const handleRemoveTag = (e: React.MouseEvent) => {

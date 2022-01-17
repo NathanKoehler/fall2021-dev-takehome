@@ -63,14 +63,6 @@ export default function TodoModal(props: any) {
     setDate("");
   };
 
-  const changeDateInput = () => {
-    if (dateInputType === "text") {
-      setDateInputType("date");
-    } else {
-      setDateInputType("text");
-    }
-  };
-
   return (
     <form className="modal-space">
       <div className="textbox-wrapper">
@@ -115,8 +107,8 @@ export default function TodoModal(props: any) {
             }
           }}
           className="textbox-date"
-          onFocus={changeDateInput}
-          onBlur={changeDateInput}
+          onFocus={() => setDateInputType("date")}
+          onBlur={() => setDateInputType("text")}
           required // enables the animation for the description of each line
         ></input>
         <label>Due Date</label>

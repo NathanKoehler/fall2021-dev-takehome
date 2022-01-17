@@ -15,6 +15,7 @@
 	padding-right: 10px;
 	padding-top: 10px;
 	padding-bottom: 10px;
+	margin-bottom: 10px;
 	background-color: #ffffff;
 	background-clip: padding-box;
 	box-sizing: border-box;
@@ -47,6 +48,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin-top: 40px;
 }
 
 .create-todo-btn i {
@@ -63,7 +65,9 @@
 	transform: scale3d(1.2, 1.2, 1);
 }
 
-.todo-tasklist {
+.tasklist {
+	display: flex;
+	justify-content: center;
 	margin-top: 25px;
 }
 

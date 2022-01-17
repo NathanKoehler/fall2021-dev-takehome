@@ -2,29 +2,32 @@ import React, { useState } from "react";
 import { TodoItem } from "./TodoList";
 import TodoModal from "./TodoModal";
 import "./TodoList.css";
-import "./Todo.css";
+import "./Task.css";
 import Fader from "./Fader";
 
-interface TodoProps {
+interface TaskProps {
   tasks: TodoItem[];
   editTodo: any;
   completeTodo: any;
   removeTodo: any;
 }
 
-export default function Todo(props: TodoProps) {
+export default function Task(props: TaskProps) {
   const [editingTodo, setEditingTodo] = useState<TodoItem | undefined>(
-    undefined
+    undefined // this stores a task that is currently being edited or undefined
   );
 
+  // called when the edited todo is submitted,
   const modTodo = (task: TodoItem) => {
     props.editTodo(task.key, task);
     setEditingTodo(undefined);
   };
 
+  // takes in a task, assigns it to editingTodo and cancels early if the given task is already complete
   const editHandler = (task: TodoItem): void => {
-    if (task.completed) return;
-    setEditingTodo(task);
+    // a call to edit a specific task
+    if (task.completed) return; // returns if no task is defined
+    setEditingTodo(task); // sets the task to be edited
   };
 
   return (
@@ -32,9 +35,12 @@ export default function Todo(props: TodoProps) {
       {props.tasks &&
         props.tasks.map((task) => {
           if (editingTodo && task.key === editingTodo.key) {
+            // if edit mode is active, display the edit modal
             return (
               <div className="modal edit" key={task.key}>
-                <Fader content={<TodoModal current={editingTodo} submit={modTodo} />} />
+                <Fader
+                  content={<TodoModal current={editingTodo} submit={modTodo} />}
+                />
               </div>
             );
           } else {
@@ -49,7 +55,18 @@ export default function Todo(props: TodoProps) {
                       className="task-text"
                       onClick={() => props.completeTodo(task.key)}
                     >
-                      <h2 className="task-title">{task.title}</h2>
+                      <h2 className="task-title">
+                        {task.title}
+                        <label className="menu-icon accept">
+                          <i
+                            className={
+                              task.completed
+                                ? "far fa-check-square"
+                                : "far fa-square"
+                            }
+                          ></i>
+                        </label>
+                      </h2>
                       <p className="task-dueDate">{task.dueDate}</p>
                     </div>
                     <div className="menu">
@@ -58,7 +75,14 @@ export default function Todo(props: TodoProps) {
                           task.completed ? "menu-icon grayed" : "menu-icon edit"
                         }
                       >
-                        <p onClick={() => editHandler(task)}>
+                        <p
+                          onClick={
+                            () =>
+                              editHandler(
+                                task
+                              ) /* goes into edit mode for the task */
+                          }
+                        >
                           <i className="fas fa-edit"></i>
                         </p>
                       </div>
