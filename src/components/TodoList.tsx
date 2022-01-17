@@ -75,32 +75,24 @@ export default function TodoList() {
     setTodos(updatedTodos);
   };
 
-  const [doNo, setDoNo] = useState(false);
-  const [timers, setTimers] = useState<NodeJS.Timeout[]>([]);
+  const [activateModal, setActivateModal] = useState(false);
 
   const buttonHandler = () => {
-    isButtonPressed(!buttonPressed);
+	isButtonPressed(!buttonPressed);
     if (!buttonPressed) {
-      setDoNo(true);
-      timers.forEach((timeout) => clearTimeout(timeout)); // cleans the timers out if the button is pressed
-      setTimers([]);
-    } else {
-      setTimers((oldArray) => [ // adds timers to an array to later clean them if needed
-        ...oldArray, // realistically should only have a length of 1 at max
-        setTimeout(() => {
-          setDoNo(false);
-        }, 300),
-      ]);
-    }	
+	  	setActivateModal(true);
+    }
   };
 
-  const clearAllTimers = useCallback(() => { // ensures that the timers are gone on component unmount
-	timers.forEach((timeout) => clearTimeout(timeout))
-  }, [timers])
-
-  useEffect(() => () => {
-	clearAllTimers();
-}, [clearAllTimers]); // when the component unmounts
+  useEffect(() => {
+	console.log("cleared timeout");
+	const timer = (activateModal ? undefined : setTimeout(() => {
+	  setActivateModal(false);
+  }, 300))
+	return () => {
+		clearTimeout(timer as NodeJS.Timeout);
+	}
+}, [activateModal]);
 
   return (
     <div>
@@ -116,13 +108,13 @@ export default function TodoList() {
               ></i>
             </div>
           </button>
-          {doNo && (
-            <div
+          {activateModal && (
+            <div // this is the task entry modal; it has a class t/f to add a small animation
               className={buttonPressed ? "modal entry active" : "modal entry"}
             >
               <Fader
                 state={buttonPressed}
-                delay={150}
+                delay={120}
                 content={<TodoModal submit={addTodo} />}
               />
             </div>
