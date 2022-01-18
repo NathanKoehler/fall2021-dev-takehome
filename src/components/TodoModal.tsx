@@ -3,13 +3,15 @@ import Tags from "./Tags";
 import "./TodoModal.css";
 
 export default function TodoModal(props: any) {
-  const [name, setName] = useState(props.current ? props.current.title : "");
+  const [name, setName] = useState(props.current ? props.current.title : '');
   const [currTag, setCurrTag] = useState("");
-  const [canSubmit, setCanSubmit] = useState<boolean[]>(props.current ? [true, true] : [false, false]);
+  const [canSubmit, setCanSubmit] = useState<boolean[]>(
+    props.current ? [true, true] : [false, false]
+  );
   const [tags, setTags] = useState<string[]>( // if this is an edit modal, properities need to be taken from old tasks
     props.current ? props.current.tagList : []
   );
-  const [date, setDate] = useState(props.current ? props.current.dueDate : []);
+  const [date, setDate] = useState(props.current ? props.current.dueDate : "");
   const [dateInputType, setDateInputType] = useState("text");
 
   const hashString = (val: string): number => {
@@ -22,6 +24,11 @@ export default function TodoModal(props: any) {
       hash = (hash << 5) - hash + chr;
       hash |= 0;
     }
+    /* We want to have the keys equal the value plus date, if user tries to make 
+    a duplicate we will test for it AFTER they hit the submit button, then which
+    if the duplicate task is marked as completed we will uncomplete it OR do
+    nothing, then afterr both we will throw out the task */
+    hash += new Date(date).getTime();
     return hash;
   };
 
@@ -50,6 +57,8 @@ export default function TodoModal(props: any) {
       taskKey = hashString(name);
     }
 
+    console.log(taskKey);
+
     props.submit({
       key: taskKey,
       title: name,
@@ -61,6 +70,8 @@ export default function TodoModal(props: any) {
     setCurrTag("");
     setName("");
     setDate("");
+    setDateInputType("text");
+    setCanSubmit([false, false]);
   };
 
   return (
@@ -90,7 +101,9 @@ export default function TodoModal(props: any) {
         />
         <label>Tags</label>
         <button onClick={submitTag} className="text-btn">
-          <p className="create-tag-text">Create tag <i className="fas fa-pen"></i></p>
+          <p className="create-tag-text">
+            Create tag <i className="fas fa-pen"></i>
+          </p>
         </button>
       </div>
       <Tags titles={tags} removeTag={removeTag} />
@@ -100,15 +113,20 @@ export default function TodoModal(props: any) {
           value={date}
           onChange={(e) => {
             setDate(e.target.value);
-            if (!isNaN(new Date(e.target.value).getDate())) {
-              setCanSubmit([canSubmit[0], true]);
+            // tests for an issue of tabbing causing the text and date to overlap
+            if (e.target.value.length > 0) {
+              if (!isNaN(new Date(e.target.value).getDate())) {
+                // tests if date is valid
+                setCanSubmit([canSubmit[0], true]);
+              }
             } else {
               setCanSubmit([canSubmit[0], false]);
             }
           }}
           className="textbox-date"
           onFocus={() => setDateInputType("date")}
-          onBlur={() => setDateInputType("text")}
+          // this ensures that the text input and date input never overlap
+          onBlur={canSubmit[1] ? undefined : () => setDateInputType("text")}
           required // enables the animation for the description of each line
         ></input>
         <label>Due Date</label>
@@ -116,7 +134,12 @@ export default function TodoModal(props: any) {
       <input
         type="submit"
         onClick={submitTodo}
-        className={(canSubmit[0] && canSubmit[1]) ? "text-btn submit" : "text-btn disabled submit"}
+        className={
+          // ensures that conditions are met before allowing submission with CSS
+          canSubmit[0] && canSubmit[1]
+            ? "text-btn submit"
+            : "text-btn disabled submit"
+        }
         value={props.current ? "Edit" : "Create"}
       ></input>
     </form>

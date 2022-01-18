@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./TodoList.css";
 import TodoModal from "./TodoModal";
+import SortModal from "./SortModal";
 import Task from "./Task";
 import Fader from "./Fader";
 
@@ -36,31 +37,28 @@ export type SortData = {
 export default function TodoList() {
   const [todos, setTodos] = useState<TodoItem[]>([]);
   const [buttonPressed, isButtonPressed] = useState(false);
+  const [activateModal, setActivateModal] = useState(false);
+  const [sorting, setSorting] = useState<boolean[]>([false, false]);
 
   const addTodo = (todo: TodoItem) => {
-    if (!todo.title || /^\s*$/.test(todo.title)) {
-      return;
-    }
+    // tests for vulnerabilities or duplicates
+    if (testTodo(todo)) return;
 
-    todo.tagList.forEach((item) => {
-      if (/^\s*$/.test(item)) return;
-    });
     const newTodos = [todo, ...todos] as TodoItem[];
-    setTodos(sorted([true, true], newTodos));
+    setTodos(sorted(sorting, newTodos));
     isButtonPressed(false);
   };
 
   const editTodo = (key: number, todo: TodoItem): void => {
-    if (!todo.title || /^\s*$/.test(todo.title)) {
-      return;
-    }
+    // tests for vulnerabilities or duplicates
+    if (testTodo(todo)) return;
 
-    todo.tagList.forEach((item) => {
-      if (/^\s*$/.test(item)) return;
-    });
     setTodos((prev) => {
-		return sorted([true, true], (prev.map((item:TodoItem) => (item.key === key ? todo : item))))
-	});
+      return sorted(
+        sorting,
+        prev.map((item: TodoItem) => (item.key === key ? todo : item))
+      );
+    });
   };
 
   const removeTodo = (key: number): void => {
@@ -75,10 +73,30 @@ export default function TodoList() {
       }
       return todo;
     });
-	setTodos(sorted([true, true], updatedTodos));
+    setTodos(sorted(sorting, updatedTodos));
   };
 
-  const [activateModal, setActivateModal] = useState(false);
+  const testTodo = (todo: TodoItem): boolean => {
+    // removes a point of injection within titles
+    if (/^\s*$/.test(todo.title)) {
+      return true;
+    }
+
+    // removes a point of injection within tags
+    todo.tagList.forEach((item) => {
+      if (/^\s*$/.test(item)) return true;
+    });
+
+    // if this is a duplicated todo, we need to throw it out
+    let index = todos.findIndex((oldTodo) => oldTodo.key === todo.key);
+    if (index > 0) {
+      // we will mark the old todo as incomplete if a dup is made
+      if (todos[index].completed) completeTodo(todo.key);
+      return true;
+    }
+
+    return false;
+  };
 
   const buttonHandler = () => {
     isButtonPressed(!buttonPressed);
@@ -87,20 +105,40 @@ export default function TodoList() {
     }
   };
 
+  const sortManager = (sortDate: boolean, sortCompleted: boolean) => {
+    console.log("sorting call");
+    if (sortDate !== sorting[0] || sortCompleted !== sorting[1]) {
+      console.log("sorting changed");
+      setTodos(sorted([sortDate, sortCompleted], todos));
+      setSorting([sortDate, sortCompleted]);
+    }
+  };
+
   function sorted(conditions: boolean[], tasks: TodoItem[]): any {
-    const sortedTasks = tasks;
+    let sortedTasks = tasks;
     if (conditions[0]) {
       // sort by date
       sortedTasks.sort((a, b) => {
-		  return new Date(a.dueDate).valueOf() - new Date(b.dueDate).valueOf()
-		});
-	  console.log("sort by date");
+        return new Date(a.dueDate).valueOf() - new Date(b.dueDate).valueOf();
+      });
+      console.log("sort by date");
     }
-	if (false) {
-		sortedTasks.sort((a, b) => (b.completed === a.completed) ? 0 : (b.completed ? 1 : 0));
+
+    if (conditions[1]) {
+      // sort by completed, with incomplete set in front
+      sortedTasks.sort((a, b) => {
+        if (a.completed === b.completed) {
+          console.log(true);
+          return 0;
+        } else {
+          if (a.completed) return 1;
+          else return -1;
+        }
+      });
+      console.log(sortedTasks);
+      console.log("sort by completed");
     }
-	console.log(sortedTasks);
-	return tasks;
+    return sortedTasks;
   }
 
   useEffect(() => {
@@ -119,16 +157,18 @@ export default function TodoList() {
     <div>
       <div className="modal-border-wrapper">
         <div className={buttonPressed ? "modal-border active" : "modal-border"}>
-          <h1>What will you do today?</h1>
-          <button onClick={buttonHandler} className="icon-btn">
-            <div className="create-todo-btn">
-              <i
-                className={
-                  buttonPressed ? "fas fa-times-circle" : "fas fa-plus-circle"
-                }
-              ></i>
-            </div>
-          </button>
+          <div className="modal-content-initial">
+            <h1>What will you do today?</h1>
+            <button onClick={buttonHandler} className="icon-btn">
+              <div className="create-todo-btn">
+                <i
+                  className={
+                    buttonPressed ? "fas fa-times-circle" : "fas fa-plus-circle"
+                  }
+                ></i>
+              </div>
+            </button>
+          </div>
           {activateModal && (
             <div // this is the task entry modal; it has a class t/f to add a small animation
               className={buttonPressed ? "modal entry active" : "modal entry"}
@@ -142,6 +182,11 @@ export default function TodoList() {
           )}
         </div>
       </div>
+      <Fader
+        state={(todos.length > 1)} // if there are todos, they need to be sorted
+        delay={120}
+        content={<SortModal sortManager={sortManager} />}
+      />
       <section className="tasklist">
         <Task
           tasks={todos}

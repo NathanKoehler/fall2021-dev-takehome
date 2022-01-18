@@ -32,7 +32,7 @@
 
 .modal.entry.active {
 	pointer-events: all;
-	transform: translateY(11rem);
+	transform: translateY(12rem);
 }
 
 .modal.entry .modal-space {
@@ -94,21 +94,25 @@
 
 .textbox-wrapper.tags input:focus ~ button p,
 .textbox-wrapper.tags input:valid ~ button p {
+	/* "Create Tag" appears when focused on the Tags field */
 	color:rgba(var(--rgb), 1);
 }
 
 .create-tag-text:hover {
 	color: #6ce2c1;
+	transform: translate3d(-2px, 0, 0);
 	--rgb: 108, 226, 193;
 }
 
 .create-tag-text i {
-	transform: translate3d(0, 0.05em, 0) scale3d(0.8, 0.8, 1);
+	/* visual icon for creating tags, changes color when hovered */
+	transform: translate3d(0.05em, 0.05em, 0) scale3d(0.8, 0.8, 1);
 	transition: color 250ms ease;
 	color:rgba(var(--rgb), 1);
 }
 
 .text-btn.disabled {
+	/* for disabled fields */
 	pointer-events: none;
 	opacity: 30%;
 }
