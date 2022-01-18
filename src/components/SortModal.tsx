@@ -13,12 +13,19 @@ export default function SortModal(props: {sortManager:(a:boolean, b:boolean) => 
         <section>
             <div className="sort-wrapper">
                 <h4>Sort by date</h4>
-                <input id="chck" onChange={() => changeManager(!sorting[0], sorting[1])} type="checkbox" />
-                <label htmlFor="chck" className="check-trail">
-                    <span className="check-handler"></span>
-                </label>
+                <div className="toggle-wrapper">
+                    <div className="toggle">
+                        <input onChange={() => changeManager(!sorting[0], sorting[1])} type="checkbox" />
+                        <label />
+                    </div>
+                </div>
                 <h4>Sort by completed</h4>
-                <input onChange={() => changeManager(sorting[0], !sorting[1])} type="checkbox" />
+                <div className="toggle-wrapper">
+                    <div className="toggle">
+                        <input onChange={() => changeManager(sorting[0], !sorting[1])} type="checkbox" />
+                        <label />
+                    </div>
+                </div>
             </div>
         </section>
     )
