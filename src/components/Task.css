@@ -3,11 +3,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 61vh;
   width: 60%;
+  overflow-y: auto;
 }
 
 .task {
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   display: flex;
   justify-content: center;
   align-items: center;

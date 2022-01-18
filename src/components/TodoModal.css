@@ -136,7 +136,7 @@
 	--secondary-input-color: #ffb600;
 }
 
-.textbox-wrapper input {
+.textbox-wrapper input[type="input"], .textbox-wrapper input[type="text"], .textbox-wrapper input[type="date"] {
 	box-sizing: content-box;
 	width: 100%;
 	border: 0;
@@ -210,4 +210,8 @@
 	font-size: 12px;
 	font-weight: 700;
 	color: var(--main-input-color);
+}
+
+.tag-color-picker {
+	position: absolute;
 }

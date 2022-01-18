@@ -154,7 +154,7 @@ export default function TodoList() {
   }, [activateModal]);
 
   return (
-    <div>
+    <div className="content">
       <div className="modal-border-wrapper">
         <div className={buttonPressed ? "modal-border active" : "modal-border"}>
           <div className="modal-content-initial">

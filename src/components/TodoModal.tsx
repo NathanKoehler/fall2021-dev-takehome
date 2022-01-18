@@ -103,6 +103,7 @@ export default function TodoModal(props: any) {
         <button onClick={submitTag} className="text-btn">
           <p className="create-tag-text">
             Create tag <i className="fas fa-pen"></i>
+            <input className="tag-color-picker" type="color" value="#e66465" />
           </p>
         </button>
       </div>
