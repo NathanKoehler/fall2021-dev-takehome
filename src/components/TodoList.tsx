@@ -22,11 +22,16 @@ import Fader from "./Fader";
 
 // Here's a baseline todo item type.
 // Feel free to extend or create your own interface!
+export type TaskTag = {
+  title: string;
+  color: string;
+}
+
 export type TodoItem = {
   key: number;
   title: string;
   dueDate: Date;
-  tagList: string[];
+  tagList: TaskTag[];
   completed: boolean;
 };
 
@@ -84,7 +89,7 @@ export default function TodoList() {
 
     // removes a point of injection within tags
     todo.tagList.forEach((item) => {
-      if (/^\s*$/.test(item)) return true;
+      if (/^\s*$/.test(item.title)) return true;
     });
 
     // if this is a duplicated todo, we need to throw it out
@@ -158,7 +163,7 @@ export default function TodoList() {
       <div className="modal-border-wrapper">
         <div className={buttonPressed ? "modal-border active" : "modal-border"}>
           <div className="modal-content-initial">
-            <h1>What will you do today?</h1>
+            <h1>What's on your mind?</h1>
             <button onClick={buttonHandler} className="icon-btn">
               <div className="create-todo-btn">
                 <i

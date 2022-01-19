@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import Tags from "./Tags";
 import "./TodoModal.css";
+import { TaskTag } from "./TodoList";
 
 export default function TodoModal(props: any) {
   const [name, setName] = useState(props.current ? props.current.title : '');
-  const [currTag, setCurrTag] = useState("");
+  const [currTag, setCurrTag] = useState({title: "", color: "#3ecbd0"});
   const [canSubmit, setCanSubmit] = useState<boolean[]>(
     props.current ? [true, true] : [false, false]
   );
-  const [tags, setTags] = useState<string[]>( // if this is an edit modal, properities need to be taken from old tasks
+  const [tags, setTags] = useState<TaskTag[]>( // if this is an edit modal, properities need to be taken from old tasks
     props.current ? props.current.tagList : []
   );
   const [date, setDate] = useState(props.current ? props.current.dueDate : "");
@@ -33,17 +34,17 @@ export default function TodoModal(props: any) {
   };
 
   const removeTag = (removedTag: string): void => {
-    const updatedTags = [...tags].filter((title) => title !== removedTag);
+    const updatedTags = [...tags].filter((elem) => elem.title !== removedTag);
     setTags(updatedTags);
   };
 
   const submitTag = (e: React.MouseEvent): void => {
     e.preventDefault();
 
-    if (currTag && !tags.find((elem) => elem === currTag)) {
+    if (currTag.title && !tags.find((elem) => elem.title === currTag.title)) {
       setTags([currTag, ...tags]);
     }
-    setCurrTag("");
+    setCurrTag({title: "", color: "#3ecbd0"});
   };
 
   const submitTodo = (e: React.MouseEvent): void => {
@@ -57,8 +58,6 @@ export default function TodoModal(props: any) {
       taskKey = hashString(name);
     }
 
-    console.log(taskKey);
-
     props.submit({
       key: taskKey,
       title: name,
@@ -67,7 +66,7 @@ export default function TodoModal(props: any) {
       completed: false,
     });
     setTags([]);
-    setCurrTag("");
+    setCurrTag({title: "", color: "#3ecbd0"});
     setName("");
     setDate("");
     setDateInputType("text");
@@ -95,8 +94,8 @@ export default function TodoModal(props: any) {
       <div className="textbox-wrapper tags">
         <input
           type="input"
-          value={currTag}
-          onChange={(e) => setCurrTag(e.target.value)}
+          value={currTag.title}
+          onChange={(e) => setCurrTag({title: e.target.value, color: currTag.color})}
           required // enables the animation for the description of each line
         />
         <label>Tags</label>
@@ -104,10 +103,10 @@ export default function TodoModal(props: any) {
           <p className="create-tag-text">
             Create tag <i className="fas fa-pen"></i>
           </p>
-          <input className="tag-color-picker" type="color" value="#e66465" />
         </button>
+        <input className="tag-color-picker" type="color" value={currTag.color} onChange={(e) => setCurrTag({title: currTag.title, color: e.target.value})} />
       </div>
-      <Tags titles={tags} removeTag={removeTag} />
+      <Tags taskTags={tags} removeTag={removeTag} />
       <div className="textbox-wrapper date">
         <input
           type={dateInputType}

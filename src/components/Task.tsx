@@ -96,8 +96,8 @@ export default function Task(props: TaskProps) {
                   <div className="tags-container">
                     {task.tagList.map((tag, index) => {
                       return (
-                        <div key={index} className="tag-wrapper">
-                          <h5 className="tag-title">{tag}</h5>
+                        <div key={index} style={{backgroundColor: `${tag.color}`}} className="tag-wrapper">
+                          <h5 className="tag-title">{tag.title}</h5>
                         </div>
                       );
                     })}
