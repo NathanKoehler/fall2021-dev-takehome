@@ -117,7 +117,7 @@ export default function TodoList() {
   const [filterTag, setFilterTag] = useState("");
 
   const sortManager = (sortDate: boolean, sortCompleted: boolean, sortTag: string) => {
-    if (sortTag) {
+    if (sortTag !== filterTag) {
       setFilterTag(sortTag);
     } 
     if (sortDate !== sorting[0] || sortCompleted !== sorting[1]) {
