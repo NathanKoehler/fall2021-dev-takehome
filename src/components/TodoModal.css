@@ -71,12 +71,6 @@
   );
 }
 
-/* realligns the color dot picker to not overflow the edit task modal */
-.modal.edit .modal-space .textbox-wrapper.tags .tag-color-picker {
-	top: -20px;
-	margin-left: -22px;
-}
-
 .icon-btn {
   padding: 8px 20px;
   border-radius: 2px;
@@ -225,13 +219,19 @@
   color: var(--main-input-color);
 }
 
+/* realligns the color dot picker to not overflow the edit task modal */
+.modal.edit .modal-space .textbox-wrapper.tags .tag-color-picker {
+	top: -1em;
+	margin-left: -1.6em;
+}
+
 .tag-color-picker {
   position: absolute;
-  top: 11px;
+  top: 0.85em;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  margin-left: 8px;
+  margin-left: 0.6em;
   width: 16px;
   height: 50%;
   background-color: transparent;

@@ -35,12 +35,9 @@ export type TodoItem = {
   completed: boolean;
 };
 
-export type SortData = {
-  completedNum: number;
-};
-
 export default function TodoList() {
   const [todos, setTodos] = useState<TodoItem[]>([]);
+  const [allTags, setAllTags] = useState(new Map());
   const [buttonPressed, isButtonPressed] = useState(false);
   const [activateModal, setActivateModal] = useState(false);
   const [sorting, setSorting] = useState<boolean[]>([false, false]);
@@ -87,11 +84,6 @@ export default function TodoList() {
       return true;
     }
 
-    // removes a point of injection within tags
-    todo.tagList.forEach((item) => {
-      if (/^\s*$/.test(item.title)) return true;
-    });
-
     // if this is a duplicated todo, we need to throw it out
     let index = todos.findIndex((oldTodo) => oldTodo.key === todo.key);
     if (index > 0) {
@@ -99,6 +91,18 @@ export default function TodoList() {
       if (todos[index].completed) completeTodo(todo.key);
       return true;
     }
+
+    // removes a point of injection within tags
+    todo.tagList.forEach((tag) => {
+      if (/^\s*$/.test(tag.title)) return true;
+      // for later searching, adds the todo to a map
+      
+      if (!allTags.get(tag.title)) { // how we will be later searching for tags
+        setAllTags(allTags.set(tag.title, [todo]));
+      } else {
+        setAllTags(allTags.set(tag.title, [...allTags.get(tag.title), todo]));
+      }
+    });
 
     return false;
   };
@@ -110,44 +114,48 @@ export default function TodoList() {
     }
   };
 
-  const sortManager = (sortDate: boolean, sortCompleted: boolean) => {
-    console.log("sorting call");
+  const [filterTag, setFilterTag] = useState("");
+
+  const sortManager = (sortDate: boolean, sortCompleted: boolean, sortTag: string) => {
+    if (sortTag) {
+      setFilterTag(sortTag);
+    } 
     if (sortDate !== sorting[0] || sortCompleted !== sorting[1]) {
-      console.log("sorting changed");
       setTodos(sorted([sortDate, sortCompleted], todos));
       setSorting([sortDate, sortCompleted]);
     }
   };
 
+  function filterUntagged ():TodoItem[] {
+    return sorted(sorting, allTags.get(filterTag));
+  }
+
   function sorted(conditions: boolean[], tasks: TodoItem[]): any {
     let sortedTasks = tasks;
+
     if (conditions[0]) {
       // sort by date
       sortedTasks.sort((a, b) => {
         return new Date(a.dueDate).valueOf() - new Date(b.dueDate).valueOf();
       });
-      console.log("sort by date");
     }
 
     if (conditions[1]) {
       // sort by completed, with incomplete set in front
       sortedTasks.sort((a, b) => {
         if (a.completed === b.completed) {
-          console.log(true);
           return 0;
         } else {
           if (a.completed) return 1;
           else return -1;
         }
       });
-      console.log(sortedTasks);
-      console.log("sort by completed");
     }
+
     return sortedTasks;
   }
 
   useEffect(() => {
-    console.log("cleared timeout");
     const timer = activateModal
       ? undefined
       : setTimeout(() => {
@@ -194,7 +202,7 @@ export default function TodoList() {
       />
       <section className="tasklist">
         <Task
-          tasks={todos}
+          tasks={(filterTag.length > 0) ? filterUntagged() : todos}
           editTodo={editTodo}
           completeTodo={completeTodo}
           removeTodo={removeTodo}
