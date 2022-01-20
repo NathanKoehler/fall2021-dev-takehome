@@ -236,8 +236,8 @@
   color: var(--main-input-color);
 }
 
-/* realligns the color dot picker to not overflow the edit task modal */
-.modal.edit .modal-space .textbox-wrapper.tags .tag-color-picker {
+/* realligns the color dot pickers to not overflow the edit task modal */
+.modal.edit .modal-space .textbox-wrapper .tag-color-picker {
 	top: -1em;
 	margin-left: -1.6em;
 }
