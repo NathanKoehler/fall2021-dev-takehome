@@ -136,7 +136,7 @@
 .text-btn.grayed {
   /* for disabled fields */
   pointer-events: none;
-  opacity: 50%;
+  opacity: .5;
 }
 
 .text-btn.submit {
