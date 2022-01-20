@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/fall2021-dev-takehome/static/css/main.ba69baf4.chunk.css",
-    "main.js": "/fall2021-dev-takehome/static/js/main.0e9fb565.chunk.js",
-    "main.js.map": "/fall2021-dev-takehome/static/js/main.0e9fb565.chunk.js.map",
+    "main.css": "/fall2021-dev-takehome/static/css/main.40adfe01.chunk.css",
+    "main.js": "/fall2021-dev-takehome/static/js/main.770fe0ae.chunk.js",
+    "main.js.map": "/fall2021-dev-takehome/static/js/main.770fe0ae.chunk.js.map",
     "runtime-main.js": "/fall2021-dev-takehome/static/js/runtime-main.74787082.js",
     "runtime-main.js.map": "/fall2021-dev-takehome/static/js/runtime-main.74787082.js.map",
     "static/js/2.fbe921d8.chunk.js": "/fall2021-dev-takehome/static/js/2.fbe921d8.chunk.js",
@@ -10,13 +10,13 @@
     "static/js/3.1a534993.chunk.js": "/fall2021-dev-takehome/static/js/3.1a534993.chunk.js",
     "static/js/3.1a534993.chunk.js.map": "/fall2021-dev-takehome/static/js/3.1a534993.chunk.js.map",
     "index.html": "/fall2021-dev-takehome/index.html",
-    "static/css/main.ba69baf4.chunk.css.map": "/fall2021-dev-takehome/static/css/main.ba69baf4.chunk.css.map",
+    "static/css/main.40adfe01.chunk.css.map": "/fall2021-dev-takehome/static/css/main.40adfe01.chunk.css.map",
     "static/js/2.fbe921d8.chunk.js.LICENSE.txt": "/fall2021-dev-takehome/static/js/2.fbe921d8.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.74787082.js",
     "static/js/2.fbe921d8.chunk.js",
-    "static/css/main.ba69baf4.chunk.css",
-    "static/js/main.0e9fb565.chunk.js"
+    "static/css/main.40adfe01.chunk.css",
+    "static/js/main.770fe0ae.chunk.js"
   ]
 }
