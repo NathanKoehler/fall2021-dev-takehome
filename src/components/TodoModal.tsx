@@ -144,7 +144,7 @@ export default function TodoModal(props: any) {
           // ensures that conditions are met before allowing submission with CSS
           canSubmit[0] && canSubmit[1]
             ? "text-btn submit"
-            : "text-btn disabled submit"
+            : "text-btn locked submit"
         }
         value={props.current ? "Edit" : "Create"}
       ></input>

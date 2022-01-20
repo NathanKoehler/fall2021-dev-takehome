@@ -133,7 +133,7 @@
   color: rgba(var(--rgb), 1);
 }
 
-.text-btn.disabled {
+.text-btn.grayed {
   /* for disabled fields */
   pointer-events: none;
   opacity: 50%;

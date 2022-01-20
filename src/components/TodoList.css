@@ -22,7 +22,6 @@
 		#83d4bc 60%,
 		#9ce9b9 100%
 	  );
-    box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
     border-radius: 100px;
 }
 
@@ -41,6 +40,7 @@
 
 .content {
 	padding: 0 1rem 0 1rem;
+	min-height: 60vh; /* prevents scrollbar from appearing when expanding todo modal */
     max-height: 100vh;
     overflow-y: auto;
 	scrollbar-gutter: stable;
