@@ -6,6 +6,7 @@ import { TaskTag } from "./TodoList";
 export default function TodoModal(props: any) {
   const [name, setName] = useState(props.current ? props.current.title : '');
   const [currTag, setCurrTag] = useState({title: "", color: "#3ecbd0"});
+  const [currColor, setCurrColor] = useState("#81e7e4");
   const [canSubmit, setCanSubmit] = useState<boolean[]>(
     props.current ? [true, true] : [false, false]
   );
@@ -44,7 +45,7 @@ export default function TodoModal(props: any) {
     if (currTag.title && !tags.find((elem) => elem.title === currTag.title)) {
       setTags([currTag, ...tags]);
     }
-    setCurrTag({title: "", color: "#3ecbd0"});
+    setCurrTag({title: "", color: currTag.color});
   };
 
   const submitTodo = (e: React.MouseEvent): void => {
@@ -63,10 +64,11 @@ export default function TodoModal(props: any) {
       title: name,
       dueDate: date,
       tagList: tags,
+      color: currColor,
       completed: false,
     });
     setTags([]);
-    setCurrTag({title: "", color: "#3ecbd0"});
+    setCurrTag({title: "", color: currTag.color});
     setName("");
     setDate("");
     setDateInputType("text");
@@ -90,6 +92,10 @@ export default function TodoModal(props: any) {
           required // enables the animation for the description of each line
         />
         <label>Task</label>
+        <div className="select-color-text">
+          Task color
+        </div>
+        <input className="tag-color-picker" type="color" value={currColor} onChange={(e) => setCurrColor(e.target.value)} />
       </div>
       <div className="textbox-wrapper tags">
         <input

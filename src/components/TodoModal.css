@@ -103,6 +103,23 @@
   color: rgba(var(--rgb), 1);
 }
 
+.select-color-text {
+  position: absolute;
+  top: 0.15em;
+  right: -0.3em;
+  transition: all 0.2s ease;
+  font-size: 1.3em;
+  background-color: transparent;
+  color: rgb(22, 138, 173);
+  padding: 5px 10px;
+  border-radius: 0.4em;
+}
+
+.select-color-text:hover {
+  color: #3ad1eb;
+  transform: translate3d(-2px, 0, 0)
+}
+
 .create-tag-text:hover {
   color: #6ce2c1;
   transform: translate3d(-2px, 0, 0);
@@ -119,7 +136,7 @@
 .text-btn.disabled {
   /* for disabled fields */
   pointer-events: none;
-  opacity: 30%;
+  opacity: 50%;
 }
 
 .text-btn.submit {

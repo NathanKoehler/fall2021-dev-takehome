@@ -30,6 +30,7 @@ export type TaskTag = {
 export type TodoItem = {
   key: number;
   title: string;
+  color: string;
   dueDate: Date;
   tagList: TaskTag[];
   completed: boolean;

@@ -46,6 +46,7 @@ export default function Task(props: TaskProps) {
           } else {
             return (
               <div
+                style={{backgroundColor: `${task.color}`}}
                 className={task.completed ? "task complete" : "task"}
                 key={task.key}
               >
