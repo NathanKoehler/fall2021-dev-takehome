@@ -6,7 +6,7 @@ import { TaskTag } from "./TodoList";
 export default function TodoModal(props: any) {
   const [name, setName] = useState(props.current ? props.current.title : '');
   const [currTag, setCurrTag] = useState({title: "", color: "#3ecbd0"});
-  const [currColor, setCurrColor] = useState("#81e7e4");
+  const [currColor, setCurrColor] = useState(props.current ? props.current.color : "#81e7e4");
   const [canSubmit, setCanSubmit] = useState<boolean[]>(
     props.current ? [true, true] : [false, false]
   );
@@ -124,6 +124,8 @@ export default function TodoModal(props: any) {
               if (!isNaN(new Date(e.target.value).getDate())) {
                 // tests if date is valid
                 setCanSubmit([canSubmit[0], true]);
+              } else {
+                setCanSubmit([canSubmit[0], false]);
               }
             } else {
               setCanSubmit([canSubmit[0], false]);
