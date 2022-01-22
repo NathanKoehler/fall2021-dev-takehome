@@ -1,5 +1,15 @@
 .App {
   text-align: center;
+  aspect-ratio: 960/300;
+	width: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+  z-index: -99;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  position: absolute;
 }
 
 .App-logo {

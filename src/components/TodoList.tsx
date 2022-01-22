@@ -39,13 +39,14 @@ export type TodoItem = {
 export default function TodoList() {
   const [todos, setTodos] = useState<TodoItem[]>([]);
   const [allTags, setAllTags] = useState(new Map());
+  const [filterTag, setFilterTag] = useState("");
   const [buttonPressed, isButtonPressed] = useState(false);
   const [activateModal, setActivateModal] = useState(false);
   const [sorting, setSorting] = useState<boolean[]>([false, false]);
 
   const addTodo = (todo: TodoItem) => {
     // tests for vulnerabilities or duplicates
-    if (testTodo(todo)) return;
+    if (testTodo(todo, -1)) return;
 
     const newTodos = [todo, ...todos] as TodoItem[];
     setTodos(sorted(sorting, newTodos));
@@ -53,13 +54,18 @@ export default function TodoList() {
   };
 
   const editTodo = (key: number, todo: TodoItem): void => {
+    let todoIndex:number = todos.findIndex((item) => item.key === key);
     // tests for vulnerabilities or duplicates
-    if (testTodo(todo)) return;
+    if (testTodo(todo, todoIndex)) return;
+
+    let unsortedTodos = todos;
+
+    unsortedTodos[todoIndex] = todo;
 
     setTodos((prev) => {
       return sorted(
         sorting,
-        prev.map((item: TodoItem) => (item.key === key ? todo : item))
+        unsortedTodos
       );
     });
   };
@@ -79,34 +85,81 @@ export default function TodoList() {
     setTodos(sorted(sorting, updatedTodos));
   };
 
-  const testTodo = (todo: TodoItem): boolean => {
+/*  todo is the todo needed to be tested, isNew is the bool
+    used to determine if the second test, the duplicate todo
+    test, is run. It is not run if we are dealing with old
+    todos that are being edited, as they will show up as
+    duplicates. */
+  const testTodo = (todo: TodoItem, oldIndex: number): boolean => {
     // removes a point of injection within titles
     if (/^\s*$/.test(todo.title)) {
       return true;
     }
 
-    // if this is a duplicated todo, we need to throw it out
-    let index = todos.findIndex((oldTodo) => oldTodo.key === todo.key);
-    if (index > 0) {
-      // we will mark the old todo as incomplete if a dup is made
-      if (todos[index].completed) completeTodo(todo.key);
-      return true;
+    if (oldIndex < 0) { // run if the todo is new
+      // if this is a duplicated todo, we need to throw it out
+      let index = todos.findIndex((oldTodo) => oldTodo.key === todo.key);
+      if (index > 0) {
+        // we will mark the old todo as incomplete if a dup is made BUT ONY IF THIS IS FROM ADDTODO
+        if (todos[index].completed) completeTodo(todo.key);
+        return true;
+      }
     }
 
-    // removes a point of injection within tags
-    todo.tagList.forEach((tag) => {
-      if (/^\s*$/.test(tag.title)) return true;
-      // for later searching, adds the todo to a map
-      
-      if (!allTags.get(tag.title)) { // how we will be later searching for tags
-        setAllTags(allTags.set(tag.title, [todo]));
-      } else {
-        setAllTags(allTags.set(tag.title, [...allTags.get(tag.title), todo]));
-      }
-    });
+    if (oldIndex >= 0) {
+      console.log("lmao");
+      let newTags = allTags;
+
+      let difference = todo.tagList.filter(x => !todos[oldIndex].tagList.includes(x));
+      difference.forEach((tag) => {
+        newTags.delete(tag.title);
+      });
+      setAllTags(newTags);
+
+      let intersection = todo.tagList.filter(x => todos[oldIndex].tagList.includes(x));
+      intersection.forEach((tag) => {
+        // removes a point of injection within tags
+        if (/^\s*$/.test(tag.title)) return true;
+  
+        // for later searching, adds the todo to a map
+        if (!newTags.get(tag.title)) { // how we will be later searching for tags
+          setAllTags(newTags.set(tag.title, [todo]));
+        } else {
+          setAllTags(newTags.set(tag.title, [...newTags.get(tag.title), todo]));
+        }
+      });
+
+      let difference2 = todos[oldIndex].tagList.filter(x => !todo.tagList.includes(x));
+      difference2.forEach((tag) => {
+        // removes a point of injection within tags
+        if (/^\s*$/.test(tag.title)) return true;
+
+        // for later searching, adds the todo to a map
+        if (!newTags.get(tag.title)) { // how we will be later searching for tags
+          setAllTags(newTags.set(tag.title, [todo]));
+        } else {
+          setAllTags(newTags.set(tag.title, [...newTags.get(tag.title), todo]));
+        }
+        console.log(newTags);
+      });
+    } else {
+      todo.tagList.forEach((tag) => {
+        // removes a point of injection within tags
+        if (/^\s*$/.test(tag.title)) return true;
+
+        // for later searching, adds the todo to a map
+        if (!allTags.get(tag.title)) { // how we will be later searching for tags
+          setAllTags(allTags.set(tag.title, [todo]));
+        } else {
+          setAllTags(allTags.set(tag.title, [...allTags.get(tag.title), todo]));
+        }
+        console.log(allTags);
+      });
+    }
 
     return false;
   };
+
 
   const buttonHandler = () => {
     isButtonPressed(!buttonPressed);
@@ -115,7 +168,6 @@ export default function TodoList() {
     }
   };
 
-  const [filterTag, setFilterTag] = useState("");
 
   const sortManager = (sortDate: boolean, sortCompleted: boolean, sortTag: string) => {
     if (sortTag !== filterTag) {
@@ -127,11 +179,18 @@ export default function TodoList() {
     }
   };
 
+
   function filterUntagged ():TodoItem[] {
     return sorted(sorting, allTags.get(filterTag));
   }
 
+
   function sorted(conditions: boolean[], tasks: TodoItem[]): any {
+    if (!tasks || tasks.length < 2) {
+      // if there are less than 2 tasks, there is no point in sorting them
+      return tasks;
+    }
+    
     let sortedTasks = tasks;
 
     if (conditions[0]) {
@@ -156,6 +215,7 @@ export default function TodoList() {
     return sortedTasks;
   }
 
+
   useEffect(() => {
     const timer = activateModal
       ? undefined
@@ -167,6 +227,7 @@ export default function TodoList() {
     };
   }, [activateModal]);
 
+  
   return (
     <div className="content">
       <div className="modal-border-wrapper">
