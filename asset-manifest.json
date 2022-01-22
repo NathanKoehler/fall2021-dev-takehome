@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/fall2021-dev-takehome/static/css/main.46460ac1.chunk.css",
-    "main.js": "/fall2021-dev-takehome/static/js/main.3848f3bd.chunk.js",
-    "main.js.map": "/fall2021-dev-takehome/static/js/main.3848f3bd.chunk.js.map",
+    "main.js": "/fall2021-dev-takehome/static/js/main.d0a0b502.chunk.js",
+    "main.js.map": "/fall2021-dev-takehome/static/js/main.d0a0b502.chunk.js.map",
     "runtime-main.js": "/fall2021-dev-takehome/static/js/runtime-main.74787082.js",
     "runtime-main.js.map": "/fall2021-dev-takehome/static/js/runtime-main.74787082.js.map",
     "static/js/2.fbe921d8.chunk.js": "/fall2021-dev-takehome/static/js/2.fbe921d8.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.74787082.js",
     "static/js/2.fbe921d8.chunk.js",
     "static/css/main.46460ac1.chunk.css",
-    "static/js/main.3848f3bd.chunk.js"
+    "static/js/main.d0a0b502.chunk.js"
   ]
 }
