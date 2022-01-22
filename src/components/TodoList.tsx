@@ -117,7 +117,7 @@ export default function TodoList() {
         if (reducedArray.length < 1) {
           newTags.delete(tag.title);
         } else {
-          newTags.set(tag.title, newTags.get(tag.title).filter((x:TodoItem) => x.title !== todo.title));
+          newTags.set(tag.title, reducedArray);
         }
       });
       setAllTags(newTags);
