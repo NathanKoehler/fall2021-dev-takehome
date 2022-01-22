@@ -110,26 +110,19 @@ export default function TodoList() {
       console.log("lmao");
       let newTags = allTags;
 
-      let difference = todo.tagList.filter(x => !todos[oldIndex].tagList.includes(x));
+      let difference = todos[oldIndex].tagList.filter(x => !todo.tagList.includes(x));
       difference.forEach((tag) => {
-        newTags.delete(tag.title);
+        // deletes the todo from the tags that it is listed under that are no longer there
+        let reducedArray:TodoItem[] = newTags.get(tag.title).filter((x:TodoItem) => x.title !== todo.title);
+        if (reducedArray.length < 1) {
+          newTags.delete(tag.title);
+        } else {
+          newTags.set(tag.title, newTags.get(tag.title).filter((x:TodoItem) => x.title !== todo.title));
+        }
       });
       setAllTags(newTags);
 
-      let intersection = todo.tagList.filter(x => todos[oldIndex].tagList.includes(x));
-      intersection.forEach((tag) => {
-        // removes a point of injection within tags
-        if (/^\s*$/.test(tag.title)) return true;
-  
-        // for later searching, adds the todo to a map
-        if (!newTags.get(tag.title)) { // how we will be later searching for tags
-          setAllTags(newTags.set(tag.title, [todo]));
-        } else {
-          setAllTags(newTags.set(tag.title, [...newTags.get(tag.title), todo]));
-        }
-      });
-
-      let difference2 = todos[oldIndex].tagList.filter(x => !todo.tagList.includes(x));
+      let difference2 = todo.tagList.filter(x => !todos[oldIndex].tagList.includes(x));
       difference2.forEach((tag) => {
         // removes a point of injection within tags
         if (/^\s*$/.test(tag.title)) return true;
@@ -140,7 +133,6 @@ export default function TodoList() {
         } else {
           setAllTags(newTags.set(tag.title, [...newTags.get(tag.title), todo]));
         }
-        console.log(newTags);
       });
     } else {
       todo.tagList.forEach((tag) => {
@@ -153,9 +145,9 @@ export default function TodoList() {
         } else {
           setAllTags(allTags.set(tag.title, [...allTags.get(tag.title), todo]));
         }
-        console.log(allTags);
       });
     }
+    console.log(allTags);
 
     return false;
   };
